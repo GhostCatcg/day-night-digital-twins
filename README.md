@@ -1,21 +1,21 @@
-# study-case
+# My Room in 3D
 
-> ## 个人博客：[GhostCat](http://gcat.cc)
+## Links
 
-## 介绍
-three、cannon、three-meshline、paper等案例研究
-## 案例列表
+- [GitHub](https://github.com/brunosimon/my-room-in-3d)
+- [Live](https://my-room-in-3d.vercel.app)
 
-### bruno-simon
-> broun-simon 的遥控汽车
-### line-infinite-Lights
-> 高速线条
+## Setup
+Download [Node.js](https://nodejs.org/en/download/).
+Run this followed commands:
 
-### shaking-paper$matter
-> yuri的液化页面交互效果
+``` bash
+# Install dependencies (only the first time)
+npm install
 
-### Sketchbook
-> 侠盗飞车游戏
+# Run the local server at localhost:8080
+npm run dev
 
-### unreal-city 
-> 太君的虚幻城市
+# Build for production in the dist/ directory
+npm run build
+```
