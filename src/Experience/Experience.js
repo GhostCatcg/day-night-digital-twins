@@ -1,17 +1,17 @@
 import * as THREE from 'three'
-import { Pane } from 'tweakpane'
+import { Pane } from 'tweakpane' // 新的gui窗口
 
 import Time from './Utils/Time.js'
 import Sizes from './Utils/Sizes.js'
 import Stats from './Utils/Stats.js'
 
-import Resources from './Resources.js'
-import Renderer from './Renderer.js'
-import Camera from './Camera.js'
-import World from './World.js'
-import Navigation from './Navigation.js'
+import Resources from './Resources.js' // 资源
+import Renderer from './Renderer.js' // 渲染器
+import Camera from './Camera.js' // 相机
+import World from './World.js' // 世界
+import Navigation from './Navigation.js' 
 
-import assets from './assets.js'
+import assets from './assets.js' // 资源
 
 export default class Experience
 {
@@ -36,22 +36,23 @@ export default class Experience
 
         this.time = new Time()
         this.sizes = new Sizes()
-        this.setConfig()
-        this.setStats()
-        this.setDebug()
-        this.setScene()
-        this.setCamera()
-        this.setRenderer()
-        this.setResources()
-        this.setWorld()
-        this.setNavigation()
+        this.setConfig() // 设置配置
+        this.setStats() // 设置帧速率
+        this.setDebug() // 设置debug ui
+        this.setScene() // 设置场景
+        this.setCamera() // 设置相机
+        this.setRenderer() // 设置渲染器
+        this.setResources() // 设置资源
+        this.setWorld() // 设置世界
+        this.setNavigation() // 
         
+        // window.resize
         this.sizes.on('resize', () =>
         {
             this.resize()
         })
 
-        this.update()
+        this.update() // 更新渲染
     }
 
     // static getInstance(_options = {})
@@ -118,6 +119,7 @@ export default class Experience
     {
         this.renderer = new Renderer({ rendererInstance: this.rendererInstance })
 
+        // 添加到dom
         this.targetElement.appendChild(this.renderer.instance.domElement)
     }
 
