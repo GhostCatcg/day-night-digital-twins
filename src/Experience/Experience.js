@@ -19,6 +19,7 @@ export default class Experience
 
     constructor(_options = {})
     {
+        // 这一步骤是关键，可是实现一个实例对象
         if(Experience.instance)
         {
             return Experience.instance

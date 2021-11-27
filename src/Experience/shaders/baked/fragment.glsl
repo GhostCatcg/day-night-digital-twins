@@ -7,19 +7,19 @@ uniform float uNightMix;
 uniform float uNeutralMix;
 
 uniform vec3 uLightTvColor;
-uniform float uLightTvStrength;
+uniform float uLightTvStrength; // 电视
 
 uniform vec3 uLightDeskColor;
-uniform float uLightDeskStrength;
+uniform float uLightDeskStrength; // 桌子
 
 uniform vec3 uLightPcColor;
-uniform float uLightPcStrength;
+uniform float uLightPcStrength; // PC
 
 varying vec2 vUv;
 
 // #pragma glslify: blend = require(glsl-blend/add)
-#pragma glslify: blend = require(glsl-blend/lighten)
-// #pragma glslify: blend = require(glsl-blend/normal)
+// #pragma glslify: blend = require(glsl-blend/lighten) // 混合
+#pragma glslify: blend = require(glsl-blend/normal)
 // #pragma glslify: blend = require(glsl-blend/screen)
 
 void main()

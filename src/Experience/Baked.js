@@ -63,13 +63,13 @@ export default class CoffeeSteam
                 uNightMix: { value: 1 },
                 uNeutralMix: { value: 0 },
 
-                uLightTvColor: { value: new THREE.Color(this.colors.tv) },
+                uLightTvColor: { value: new THREE.Color(this.colors.tv) }, // 电视后面的光
                 uLightTvStrength: { value: 1.47 },
 
-                uLightDeskColor: { value: new THREE.Color(this.colors.desk) },
+                uLightDeskColor: { value: new THREE.Color(this.colors.desk) }, // 桌子后面的光
                 uLightDeskStrength: { value: 1.9 },
 
-                uLightPcColor: { value: new THREE.Color(this.colors.pc) },
+                uLightPcColor: { value: new THREE.Color(this.colors.pc) }, // PC显示器后面的光
                 uLightPcStrength: { value: 1.4 }
             },
             vertexShader: vertexShader,
