@@ -1,161 +1,145 @@
-import * as THREE from 'three'
+import * as THREE from "three";
 
-import Experience from './Experience.js'
-import vertexShader from './shaders/baked/vertex.glsl'
-import fragmentShader from './shaders/baked/fragment.glsl'
+import Experience from "./Experience.js";
+import vertexShader from "./shaders/baked/vertex.glsl";
+import fragmentShader from "./shaders/baked/fragment.glsl";
+import gsap from 'gsap'
+export default class CoffeeSteam {
+  constructor() {
+    this.experience = new Experience();
+    this.resources = this.experience.resources;
+    this.debug = this.experience.debug;
+    this.scene = this.experience.scene;
+    this.time = this.experience.time;
 
-export default class CoffeeSteam
-{
-    constructor()
-    {
-        this.experience = new Experience()
-        this.resources = this.experience.resources
-        this.debug = this.experience.debug
-        this.scene = this.experience.scene
-        this.time = this.experience.time
-
-        // Debug
-        if(this.debug)
-        {
-            this.debugFolder = this.debug.addFolder({
-                title: 'baked',
-                expanded: true
-            })
-        }
-
-        this.setModel()
+    // Debug
+    if (this.debug) {
+      this.debugFolder = this.debug.addFolder({
+        title: "智慧园区",
+        expanded: true,
+      });
     }
 
-    setModel()
-    {
-        this.model = {}
-        
-        this.model.mesh = this.resources.items.roomModel.scene.children[0]
+    this.setModel();
+  }
 
-        this.model.bakedDayTexture = this.resources.items.bakedDayTexture
-        this.model.bakedDayTexture.encoding = THREE.sRGBEncoding
-        this.model.bakedDayTexture.flipY = false
+  setModel() {
+    this.model = {};
 
-        this.model.bakedNightTexture = this.resources.items.bakedNightTexture
-        this.model.bakedNightTexture.encoding = THREE.sRGBEncoding
-        this.model.bakedNightTexture.flipY = false
+    this.model.mesh = this.resources.items.roomModel.scene.children[0];
 
-        this.model.bakedNeutralTexture = this.resources.items.bakedNeutralTexture
-        this.model.bakedNeutralTexture.encoding = THREE.sRGBEncoding
-        this.model.bakedNeutralTexture.flipY = false
+    this.model.bakedDayTexture = this.resources.items.bakedDayTexture;
+    this.model.bakedDayTexture.encoding = THREE.sRGBEncoding;
+    this.model.bakedDayTexture.flipY = false;
 
-        this.model.lightMapTexture = this.resources.items.lightMapTexture
-        this.model.lightMapTexture.flipY = false
+    this.model.bakedNightTexture = this.resources.items.bakedNightTexture;
+    this.model.bakedNightTexture.encoding = THREE.sRGBEncoding;
+    this.model.bakedNightTexture.flipY = false;
 
-        this.colors = {}
-        this.colors.tv = '#ff115e'
-        this.colors.desk = '#ff6700'
-        this.colors.pc = '#0082ff'
+    this.model.lightMapTexture = this.resources.items.lightMapTexture;
+    this.model.lightMapTexture.encoding = THREE.sRGBEncoding;
+    this.model.lightMapTexture.flipY = false;
 
-        this.model.material = new THREE.ShaderMaterial({
-            uniforms:
-            {
-                uBakedDayTexture: { value: this.model.bakedDayTexture },
-                uBakedNightTexture: { value: this.model.bakedNightTexture },
-                uBakedNeutralTexture: { value: this.model.bakedNeutralTexture },
-                uLightMapTexture: { value: this.model.lightMapTexture },
+    this.colors = {};
+    this.colors.window = "#ffffff";
+    this.colors.lamp = "#ffffff";
+    this.colors.other = "#ffffff";
 
-                uNightMix: { value: 1 },
-                uNeutralMix: { value: 0 },
+    this.model.material = new THREE.ShaderMaterial({
+      uniforms: {
+        uBakedDayTexture: { value: this.model.bakedDayTexture },
+        uBakedNightTexture: { value: this.model.bakedNightTexture },
+        // uBakedNeutralTexture: { value: this.model.bakedNeutralTexture },
+        uLightMapTexture: { value: this.model.lightMapTexture },
 
-                uLightTvColor: { value: new THREE.Color(this.colors.tv) }, // 电视后面的光
-                uLightTvStrength: { value: 1.47 },
+        uNightMix: { value: 0 },
+        uNeutralMix: { value: 0 },
 
-                uLightDeskColor: { value: new THREE.Color(this.colors.desk) }, // 桌子后面的光
-                uLightDeskStrength: { value: 1.9 },
+        uLightWindowColor: { value: new THREE.Color(this.colors.window) },
+        uLightWindowStrength: { value: 0 },
 
-                uLightPcColor: { value: new THREE.Color(this.colors.pc) }, // PC显示器后面的光
-                uLightPcStrength: { value: 1.4 }
-            },
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader
-        })
+        uLightLamOtherolor: { value: new THREE.Color(this.colors.lamp) },
+        uLightLampStrength: { value: 0 },
 
-        this.model.mesh.traverse((_child) =>
-        {
-            if(_child instanceof THREE.Mesh)
-            {
-                _child.material = this.model.material
-            }
-        })
+        uLightOtherColor: { value: new THREE.Color(this.colors.other) },
+        uLightOtherStrength: { value: 0 },
+      },
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+    });
 
-        this.scene.add(this.model.mesh)
-        
-        // Debug
-        if(this.debug)
-        {
-            this.debugFolder
-                .addInput(
-                    this.model.material.uniforms.uNightMix,
-                    'value',
-                    { label: 'uNightMix', min: 0, max: 1 }
-                )
+    this.model.mesh.traverse((_child) => {
+      if (_child instanceof THREE.Mesh) {
+        _child.material = this.model.material;
+      }
+    });
 
-            this.debugFolder
-                .addInput(
-                    this.model.material.uniforms.uNeutralMix,
-                    'value',
-                    { label: 'uNeutralMix', min: 0, max: 1 }
-                )
+    this.scene.add(this.model.mesh);
 
-            this.debugFolder
-                .addInput(
-                    this.colors,
-                    'tv',
-                    { view: 'color' }
-                )
-                .on('change', () =>
-                {
-                    this.model.material.uniforms.uLightTvColor.value.set(this.colors.tv)
-                })
+    // Debug
+    if (this.debug) {
 
-            this.debugFolder
-                .addInput(
-                    this.model.material.uniforms.uLightTvStrength,
-                    'value',
-                    { label: 'uLightTvStrength', min: 0, max: 3 }
-                )
+      const btn = this.debugFolder.addButton({
+        title: "切换",
+        label: "白天/夜晚",
+      });
 
-            this.debugFolder
-                .addInput(
-                    this.colors,
-                    'desk',
-                    { view: 'color' }
-                )
-                .on('change', () =>
-                {
-                    this.model.material.uniforms.uLightDeskColor.value.set(this.colors.desk)
-                })
+      // this.debugFolder.addInput(
+      //   this.model.material.uniforms.uNightMix,
+      //   "value",
+      //   { label: "白天/夜晚", min: 0, max: 1 }
+      // );
+      
+      btn.on("click", () => {
+        const number =
+          this.model.material.uniforms.uNightMix.value === 1 ? 0 : 1;
+        gsap.to(this.model.material.uniforms.uNightMix, {
+          duration: 1,
+          value: number,
+        });
+      });
 
-            this.debugFolder
-                .addInput(
-                    this.model.material.uniforms.uLightDeskStrength,
-                    'value',
-                    { label: 'uLightDeskStrength', min: 0, max: 3 }
-                )
+      this.debugFolder
+        .addInput(this.colors, "window", { view: "color" })
+        .on("change", () => {
+          this.model.material.uniforms.uLightWindowColor.value.set(
+            this.colors.window
+          );
+        });
 
-            this.debugFolder
-                .addInput(
-                    this.colors,
-                    'pc',
-                    { view: 'color' }
-                )
-                .on('change', () =>
-                {
-                    this.model.material.uniforms.uLightPcColor.value.set(this.colors.pc)
-                })
+      this.debugFolder.addInput(
+        this.model.material.uniforms.uLightWindowStrength,
+        "value",
+        { label: "窗户灯光强度", min: 0, max: 1 }
+      );
 
-            this.debugFolder
-                .addInput(
-                    this.model.material.uniforms.uLightPcStrength,
-                    'value',
-                    { label: 'uLightPcStrength', min: 0, max: 3 }
-                )
-        }
+      this.debugFolder
+        .addInput(this.colors, "lamp", { view: "color" })
+        .on("change", () => {
+          this.model.material.uniforms.uLightLamOtherolor.value.set(
+            this.colors.lamp
+          );
+        });
+
+      this.debugFolder.addInput(
+        this.model.material.uniforms.uLightLampStrength,
+        "value",
+        { label: "路灯灯光强度", min: 0, max: 3 }
+      );
+
+      this.debugFolder
+        .addInput(this.colors, "other", { view: "color" })
+        .on("change", () => {
+          this.model.material.uniforms.uLightOtherColor.value.set(
+            this.colors.other
+          );
+        });
+
+      this.debugFolder.addInput(
+        this.model.material.uniforms.uLightOtherStrength,
+        "value",
+        { label: "其他灯光强度", min: 0, max: 3 }
+      );
     }
+  }
 }

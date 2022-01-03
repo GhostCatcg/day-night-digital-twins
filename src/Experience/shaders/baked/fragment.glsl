@@ -1,19 +1,19 @@
 uniform sampler2D uBakedDayTexture;
 uniform sampler2D uBakedNightTexture;
-uniform sampler2D uBakedNeutralTexture;
+// uniform sampler2D uBakedNeutralTexture;
 uniform sampler2D uLightMapTexture;
 
 uniform float uNightMix;
-uniform float uNeutralMix;
+// uniform float uNeutralMix;
 
-uniform vec3 uLightTvColor;
-uniform float uLightTvStrength; // 电视
+uniform vec3 uLightWindowColor;
+uniform float uLightWindowStrength; // 电视
 
-uniform vec3 uLightDeskColor;
-uniform float uLightDeskStrength; // 桌子
+uniform vec3 uLightLamOtherolor;
+uniform float uLightLampStrength; // 桌子
 
-uniform vec3 uLightPcColor;
-uniform float uLightPcStrength; // PC
+uniform vec3 uLightOtherColor;
+uniform float uLightOtherStrength; // Other
 
 varying vec2 vUv;
 
@@ -26,18 +26,18 @@ void main()
 {
     vec3 bakedDayColor = texture2D(uBakedDayTexture, vUv).rgb;
     vec3 bakedNightColor = texture2D(uBakedNightTexture, vUv).rgb;
-    vec3 bakedNeutralColor = texture2D(uBakedNeutralTexture, vUv).rgb;
-    vec3 bakedColor = mix(mix(bakedDayColor, bakedNightColor, uNightMix), bakedNeutralColor, uNeutralMix);
-    vec3 lightMapColor = texture2D(uLightMapTexture, vUv).rgb;
+    // vec3 bakedNeutralColor = texture2D(uBakedNeutralTexture, vUv).rgb;
+    vec3 bakedColor = mix(bakedDayColor, bakedNightColor, uNightMix);
+    vec3 lightMaOtherolor = texture2D(uLightMapTexture, vUv).rgb;
 
-    float lightTvStrength = lightMapColor.r * uLightTvStrength;
-    bakedColor = blend(bakedColor, uLightTvColor, lightTvStrength);
+    float lightLightStrength = lightMaOtherolor.r * uLightWindowStrength;
+    bakedColor = blend(bakedColor, uLightWindowColor, lightLightStrength);
 
-    float lightPcStrength = lightMapColor.b * uLightPcStrength;
-    bakedColor = blend(bakedColor, uLightPcColor, lightPcStrength);
+    float lightOtherStrength = lightMaOtherolor.b * uLightOtherStrength;
+    bakedColor = blend(bakedColor, uLightOtherColor, lightOtherStrength);
 
-    float lightDeskStrength = lightMapColor.g * uLightDeskStrength;
-    bakedColor = blend(bakedColor, uLightDeskColor, lightDeskStrength);
+    float lightLampStrength = lightMaOtherolor.g * uLightLampStrength;
+    bakedColor = blend(bakedColor, uLightLamOtherolor, lightLampStrength);
 
     gl_FragColor = vec4(bakedColor, 1.0);
 }
