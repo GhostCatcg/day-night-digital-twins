@@ -138,7 +138,7 @@ export default class CoffeeSteam {
       this.debugFolder.addInput(
         this.model.material.uniforms.uLightOtherStrength,
         "value",
-        { label: "其他灯光强度", min: 0, max: 3 }
+        { label: "装饰灯光强度", min: 0, max: 3 }
       );
     }
   }
