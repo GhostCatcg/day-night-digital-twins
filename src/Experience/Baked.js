@@ -3,8 +3,8 @@ import * as THREE from "three";
 import Experience from "./Experience.js";
 import vertexShader from "./shaders/baked/vertex.glsl";
 import fragmentShader from "./shaders/baked/fragment.glsl";
-import gsap from 'gsap'
-export default class CoffeeSteam {
+import gsap from "gsap";
+export default class Baked {
   constructor() {
     this.experience = new Experience();
     this.resources = this.experience.resources;
@@ -78,7 +78,6 @@ export default class CoffeeSteam {
 
     // Debug
     if (this.debug) {
-
       const btn = this.debugFolder.addButton({
         title: "切换",
         label: "白天/夜晚",
@@ -89,7 +88,7 @@ export default class CoffeeSteam {
       //   "value",
       //   { label: "白天/夜晚", min: 0, max: 1 }
       // );
-      
+
       btn.on("click", () => {
         const number =
           this.model.material.uniforms.uNightMix.value === 1 ? 0 : 1;
